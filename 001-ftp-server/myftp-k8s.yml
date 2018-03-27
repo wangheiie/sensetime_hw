@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: only-myftp
+  name: only-myftp
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: only-myftp
+    spec:
+      containers:
+      - image: doublered/myftp:versager
+        name: only-myftp
+        resources: {}
+      restartPolicy: Always
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: only-myftp
+  name: alarm
+spec:
+  ports:
+  - name: "only-myftp-port"
+    port: 666
+    targetPort: 666
+    nodePort: 666
+  selector:
+    io.kompose.service: only-myftp
+status:
+  loadBalancer: {}
+
